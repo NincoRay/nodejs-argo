@@ -32,12 +32,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
-      # ---------------- 新增的步骤：将用户名转为小写 ----------------
       - name: Convert repository owner to lowercase
         run: echo "REPO_OWNER=${OWNER,,}" >> $GITHUB_ENV
         env:
           OWNER: '${{ github.repository_owner }}'
-      # -------------------------------------------------------------
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
@@ -46,7 +44,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            # 注意这里改用了刚刚生成的全小写变量 ${{ env.REPO_OWNER }}
             ghcr.io/${{ env.REPO_OWNER }}/speedtest-zzz:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
